@@ -234,14 +234,52 @@ func hapusDestinasi() {
 
 // Untuk Pengguna
 func beriRating() {
+	if JumlahWisata == 0 {
+		fmt.Println("Belum ada destinasi yang tersedia untuk diberi rating.")
+		return
+	}
+
+	var nama string
+	fmt.Print("Masukkan nama destinasi yang ingin diberi rating: ")
+	fmt.Scanln(&nama)
+
+	var index = -1
+	for i := 0; i < JumlahWisata; i++ {
+		if strings.EqualFold(TempatWisata[i].nama, nama) {
+			index = i
+			break
+		}
+	}
+
+	if index == -1 {
+		fmt.Println("Tempat wisata tidak ditemukan.")
+		return
+	}
+
+	destinasi := &TempatWisata[index]
+	fmt.Printf("Anda memberikan rating untuk destinasi: %s (Rating saat ini: %.2f)
+", destinasi.nama, destinasi.rating)
+
+	var ratingBaru float64
+	fmt.Print("Masukkan rating baru (1.0 - 5.0): ")
+	fmt.Scanln(&ratingBaru)
+
+	if ratingBaru < 1.0 || ratingBaru > 5.0 {
+		fmt.Println("Rating tidak valid. Harap masukkan nilai antara 1.0 dan 5.0.")
+		return
+	}
+
+	destinasi.rating = ((destinasi.rating * float64(destinasi.jumlahRating)) + ratingBaru) / float64(destinasi.jumlahRating+1)
+	destinasi.jumlahRating++
+	fmt.Println("Terima kasih, rating Anda telah disimpan.")
+}
+
+
+func cariDestinasi(){ // Nanti disini ada menu lagi cari destinasi berdasarkan nama dan kategori
 
 }
 
-func cariDestinasi(){ //nanti disini ada menu lagi cari destinasi berdasarkan nama dan kategori
-
-}
-
-func urutkanDestinasi() { // disini ada menu juga urutkan berdasarkan harga tiket dan nama A-Z jarak
+func urutkanDestinasi() { // Disini ada menu juga untuk mengurutkan berdasarkan harga tiket dan nama A-Z jarak
 
 }
 
