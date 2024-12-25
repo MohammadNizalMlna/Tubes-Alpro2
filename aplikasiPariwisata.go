@@ -279,7 +279,7 @@ func cariDestinasi(){ // Nanti disini ada menu lagi cari destinasi berdasarkan n
 
 }
 
-func urutkanDestinasi() { // Disini ada menu juga untuk mengurutkan berdasarkan harga tiket dan nama A-Z jarak
+func urutkanDestinasi() { // Disini ada menu juga untuk mengurutkan berdasarkan harga tiket dan nama A-Z jarak alskdfj;lasdfjk;asjfkdF
 
 }
 
