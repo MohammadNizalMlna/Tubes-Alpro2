@@ -106,7 +106,7 @@ func main() {
 	}
 }
 
-// UNTUK ADMIN
+// Untuk Admin
 func tambahDestinasi() {
 	if JumlahWisata >= maxWisata {
 		fmt.Println("Kapasitas penuh, wisata tidak bisa  ditambahkan")
@@ -245,7 +245,7 @@ func urutkanDestinasi() { // disini ada menu juga urutkan berdasarkan harga tike
 
 }
 
-// untuk semua
+// Untuk Semua
 
 func lihatSemuaDestinasi() {
 	if JumlahWisata == 0 {
