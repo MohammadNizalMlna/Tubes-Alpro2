@@ -24,7 +24,7 @@ var JumlahWisata int
 
 func main() {
 	for {
-		fmt.Println("Menu utama : ")
+		fmt.Println("======= Menu utama ========== ")
 		fmt.Println("1. Masuk sebagai Admin ")
 		fmt.Println("2. Masuk sebagain Pengguna ")
 		fmt.Println("3. Keluar aplikasi")
@@ -40,7 +40,7 @@ func main() {
 		switch pilihanRole {
 		case 1:
 			for {
-				fmt.Println("Anda masuk sebagai admin")
+				fmt.Println("========== Anda masuk sebagai admin ==============")
 				fmt.Println("1. Tambah Tempat Wisata")
 				fmt.Println("2. Edit Tempat Wisata")
 				fmt.Println("3. Hapus Tempat Wisata")
@@ -72,7 +72,7 @@ func main() {
 			}
 		case 2:
 			for {
-				fmt.Println("Anda masuk sebagai pengguna")
+				fmt.Println("======= Anda masuk sebagai pengguna ==========")
 				fmt.Println("1. Lihat Semua Tempat Wisata")
 				fmt.Println("2. Urutkan Tempat Wisata")
 				fmt.Println("3. Cari tempat wisata")
@@ -106,7 +106,7 @@ func main() {
 	}
 }
 
-// UNTUK ADMIN
+// Untuk Admin
 func tambahDestinasi() {
 	if JumlahWisata >= maxWisata {
 		fmt.Println("Kapasitas penuh, wisata tidak bisa  ditambahkan")
@@ -123,7 +123,7 @@ func tambahDestinasi() {
 	fmt.Print("Masukan kategori wisata: ")
 	fmt.Scanln(&Wisata.kategori)
 
-	fmt.Print("Masukan harga tiiket masuk : ")
+	fmt.Print("Masukan harga tiket masuk : ")
 	fmt.Scanln(&Wisata.hargaTiket)
 
 	fmt.Print("Masukan jarak ke destinasi (dalam km) : ")
@@ -234,18 +234,149 @@ func hapusDestinasi() {
 
 // Untuk Pengguna
 func beriRating() {
+	if JumlahWisata == 0 {
+		fmt.Println("Belum ada destinasi yang tersedia untuk diberi rating.")
+		return
+	}
 
+	var nama string
+	fmt.Print("Masukkan nama destinasi yang ingin diberi rating: ")
+	fmt.Scanln(&nama)
+
+	var index = -1
+	for i := 0; i < JumlahWisata; i++ {
+		if strings.EqualFold(TempatWisata[i].nama, nama) {
+			index = i
+			break
+		}
+	}
+
+	if index == -1 {
+		fmt.Println("Tempat wisata tidak ditemukan.")
+		return
+	}
+
+	destinasi := &TempatWisata[index]
+	fmt.Printf("Anda memberikan rating untuk destinasi: %s (Rating saat ini: %.2f)", destinasi.nama, destinasi.rating)
+
+	var ratingBaru float64
+	fmt.Print("Masukkan rating baru (1.0 - 5.0): ")
+	fmt.Scanln(&ratingBaru)
+
+	if ratingBaru < 1.0 || ratingBaru > 5.0 {
+		fmt.Println("Rating tidak valid. Harap masukkan nilai antara 1.0 dan 5.0.")
+		return
+	}
+
+	destinasi.rating = ((destinasi.rating * float64(destinasi.jumlahRating)) + ratingBaru) / float64(destinasi.jumlahRating+1)
+	destinasi.jumlahRating++
+	fmt.Println("Terima kasih, rating Anda telah disimpan.")
 }
 
-func cariDestinasi(){ //nanti disini ada menu lagi cari destinasi berdasarkan nama dan kategori
 
+func cariDestinasi(){ 
+	if JumlahWisata == 0{
+		fmt.Println("Belum ada destinasi wisata yang tersedia untuk dicari")
+		return
+	}
+	var pilih int
+	fmt.Println("Cari destinasi berdasarkan : ")
+	fmt.Println("1. Nama destinasi wisata ")
+	fmt.Println("2. Kategori destinasi wisata ")
+	fmt.Print("pilih : ")
+	fmt.Scanln(&pilih)
+
+	switch pilih {
+		case 1:
+			fmt.Print("Masukkan nama destinasi yang dicari: ")
+		var nama string
+		fmt.Scanln(&nama)
+		fmt.Println("Hasil pencarian destinasi berdasarkan nama:")
+		found := false
+		for _, destinasi := range TempatWisata[:JumlahWisata] {
+			if strings.Contains(strings.ToLower(destinasi.nama), strings.ToLower(nama)) {
+				fmt.Printf("%d. %s (Kategori: %s, Harga: Rp%d, Jarak: %d km, Rating: %.2f)\n",
+					destinasi.id, destinasi.nama, destinasi.kategori, destinasi.hargaTiket, destinasi.jarak, destinasi.rating)
+				fmt.Printf(" Fasilitas: %s\n", strings.Join(destinasi.fasilitasWisata[:], ", "))
+				found = true
+			}
+		}
+		if !found{
+			fmt.Println("Tidak ada destinasi yang ditemukan")
+		}
+	case 2:
+		fmt.Print("Masukkan kategori destinasi yang dicari: ")
+		var kategori string
+		fmt.Scanln(&kategori)
+		fmt.Println("Hasil pencarian destinasi berdasarkan kategori:")
+		found := false
+		for _, destinasi := range TempatWisata[:JumlahWisata] {
+			if strings.EqualFold(destinasi.kategori, kategori) {
+				fmt.Printf("%d. %s (Kategori: %s, Harga: Rp%d, Jarak: %d km, Rating: %.2f)\n",
+					destinasi.id, destinasi.nama, destinasi.kategori, destinasi.hargaTiket, destinasi.jarak, destinasi.rating)
+				fmt.Printf(" Fasilitas: %s\n", strings.Join(destinasi.fasilitasWisata[:], ", "))
+				found = true
+			}
+		}
+		if !found {
+			fmt.Println("Tidak ada destinasi yang ditemukan.")
+		}
+	default:
+		fmt.Println("Pilihan tidak valid.")
+	}
 }
 
-func urutkanDestinasi() { // disini ada menu juga urutkan berdasarkan harga tiket dan nama A-Z jarak
+func urutkanDestinasi() { 
+	if JumlahWisata == 0 {
+		fmt.Println("Belum ada destinasi wisata yang tersedia untuk diurutkan ")
+		return
+	}
+	var pilihan int
+	fmt.Println("Urutkan destinasi wisata berdasarkan : ")
+	fmt.Println("1. Harga Tiket  ") // ascending
+	fmt.Println("2. Jarak  ") // ascending
+	fmt.Println("3. Rating  ") // descending
+	fmt.Print(" pilih : ")
+	fmt.Scanln(&pilihan)
 
+	switch pilihan {	
+	case 1 :
+		for i:=0; i<JumlahWisata-1; i++{
+			for j:=0; j<JumlahWisata-i-1; j++{
+				if TempatWisata[j].hargaTiket > TempatWisata[j+1].hargaTiket{
+					TempatWisata[j], TempatWisata[j+1] = TempatWisata[j+1], TempatWisata[j]
+				}
+			}
+		}
+		fmt.Println("Harga tiket wisata berhasi diurutkan")
+
+	case 2 :
+		for i:=0; i<JumlahWisata-1; i++{
+			for j:=0; j<JumlahWisata-i-1; j++{
+				if TempatWisata[j].jarak > TempatWisata[j+1].jarak{
+					TempatWisata[j], TempatWisata[j+1] = TempatWisata[j+1], TempatWisata[j]
+				}
+			}
+		}
+		fmt.Println("Jarak wisata berhasil diurutkan ")
+
+	case 3 :
+		for i:=0; i<JumlahWisata-1; i++{
+			for j:=0; j<JumlahWisata-i-1; j++{
+				if int(TempatWisata[j].rating) < int(TempatWisata[j+1].rating){
+					TempatWisata[j], TempatWisata[j+1] = TempatWisata[j+1], TempatWisata[j]
+				}
+			}
+		}
+		fmt.Println("Rating berhasil diurutkan")
+	default:
+		fmt.Println("Pilihan tidak valid")
+		return
+	}
+	lihatSemuaDestinasi()
 }
 
-// untuk semua
+// Untuk Semua
 
 func lihatSemuaDestinasi() {
 	if JumlahWisata == 0 {
