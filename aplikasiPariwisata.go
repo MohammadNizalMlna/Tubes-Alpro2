@@ -86,19 +86,19 @@ func main() {
 				switch pilihanPengguna {
 				case 1:
 					lihatSemuaDestinasi()
-				case 2 :
+				case 2:
 					urutkanDestinasi()
-				case 3 :
+				case 3:
 					cariDestinasi()
-				case 4 :
+				case 4:
 					beriRating()
-				case 0 :
+				case 0:
 					fmt.Println("Keluar dari pengguna")
 					break
-				default :
+				default:
 					fmt.Println("pilihan tidak valid")
 				}
-				if pilihanPengguna == 0{
+				if pilihanPengguna == 0 {
 					break
 				}
 			}
@@ -151,14 +151,14 @@ func editDestinasi() {
 	fmt.Scanln(&nama)
 
 	var index = -1
-	for i :=0; i<JumlahWisata; i++{
-		if strings.EqualFold(TempatWisata[i].nama, nama){
+	for i := 0; i < JumlahWisata; i++ {
+		if strings.EqualFold(TempatWisata[i].nama, nama) {
 			index = i
 			break
 		}
 	}
 
-	if index == -1{
+	if index == -1 {
 		fmt.Println("Tempat wisata tidak ditemukan")
 		return
 	}
@@ -169,7 +169,7 @@ func editDestinasi() {
 	fmt.Print("Masukkan nama tempat wisata yang baru (kosongkan jika tidak mengubah): ")
 	var namaBaru string
 	fmt.Scanln(&namaBaru)
-	if namaBaru != ""{
+	if namaBaru != "" {
 		destinasi.nama = namaBaru
 	}
 
@@ -183,7 +183,7 @@ func editDestinasi() {
 	fmt.Print("Masukkan harga tiket baru (0 untuk jika tidak ada yang diubah) : ")
 	var tiketBaru int
 	fmt.Scanln(&tiketBaru)
-	if tiketBaru > 0{
+	if tiketBaru > 0 {
 		destinasi.hargaTiket = tiketBaru
 	}
 
@@ -195,11 +195,11 @@ func editDestinasi() {
 	}
 
 	fmt.Print("Masukkan fasilitas baru (kosongkan jika tidak ada yang diubah) :  ")
-	for i:= 0; i < MaxFasilitas; i++{
+	for i := 0; i < MaxFasilitas; i++ {
 		fmt.Printf("Fasilitas %d: ", i+1)
 		var fasilitasBaru string
 		fmt.Scanln(&fasilitasBaru)
-		if fasilitasBaru != ""{
+		if fasilitasBaru != "" {
 			destinasi.fasilitasWisata[i] = fasilitasBaru
 		}
 	}
@@ -213,8 +213,8 @@ func hapusDestinasi() {
 	fmt.Scanln(&nama)
 
 	var index = -1
-	for i:=0; i<JumlahWisata; i++{
-		if strings.EqualFold(TempatWisata[i].nama, nama){
+	for i := 0; i < JumlahWisata; i++ {
+		if strings.EqualFold(TempatWisata[i].nama, nama) {
 			index = i
 			break
 		}
@@ -225,7 +225,7 @@ func hapusDestinasi() {
 		return
 	}
 
-	for i:= index; i < JumlahWisata-1; i++{
+	for i := index; i < JumlahWisata-1; i++ {
 		TempatWisata[i] = TempatWisata[i+1]
 	}
 	JumlahWisata--
@@ -273,9 +273,8 @@ func beriRating() {
 	fmt.Println("Terima kasih, rating Anda telah disimpan.")
 }
 
-
-func cariDestinasi(){ 
-	if JumlahWisata == 0{
+func cariDestinasi() {
+	if JumlahWisata == 0 {
 		fmt.Println("Belum ada destinasi wisata yang tersedia untuk dicari")
 		return
 	}
@@ -287,8 +286,8 @@ func cariDestinasi(){
 	fmt.Scanln(&pilih)
 
 	switch pilih {
-		case 1:
-			fmt.Print("Masukkan nama destinasi yang dicari: ")
+	case 1:
+		fmt.Print("Masukkan nama destinasi yang dicari: ")
 		var nama string
 		fmt.Scanln(&nama)
 		fmt.Println("Hasil pencarian destinasi berdasarkan nama:")
@@ -301,7 +300,7 @@ func cariDestinasi(){
 				found = true
 			}
 		}
-		if !found{
+		if !found {
 			fmt.Println("Tidak ada destinasi yang ditemukan")
 		}
 	case 2:
@@ -326,7 +325,7 @@ func cariDestinasi(){
 	}
 }
 
-func urutkanDestinasi() { 
+func urutkanDestinasi() {
 	if JumlahWisata == 0 {
 		fmt.Println("Belum ada destinasi wisata yang tersedia untuk diurutkan ")
 		return
@@ -334,36 +333,36 @@ func urutkanDestinasi() {
 	var pilihan int
 	fmt.Println("Urutkan destinasi wisata berdasarkan : ")
 	fmt.Println("1. Harga Tiket  ") // ascending
-	fmt.Println("2. Jarak  ") // ascending
-	fmt.Println("3. Rating  ") // descending
+	fmt.Println("2. Jarak  ")       // ascending
+	fmt.Println("3. Rating  ")      // descending
 	fmt.Print(" pilih : ")
 	fmt.Scanln(&pilihan)
 
-	switch pilihan {	
-	case 1 :
-		for i:=0; i<JumlahWisata-1; i++{
-			for j:=0; j<JumlahWisata-i-1; j++{
-				if TempatWisata[j].hargaTiket > TempatWisata[j+1].hargaTiket{
+	switch pilihan {
+	case 1:
+		for i := 0; i < JumlahWisata-1; i++ {
+			for j := 0; j < JumlahWisata-i-1; j++ {
+				if TempatWisata[j].hargaTiket > TempatWisata[j+1].hargaTiket {
 					TempatWisata[j], TempatWisata[j+1] = TempatWisata[j+1], TempatWisata[j]
 				}
 			}
 		}
 		fmt.Println("Harga tiket wisata berhasi diurutkan")
 
-	case 2 :
-		for i:=0; i<JumlahWisata-1; i++{
-			for j:=0; j<JumlahWisata-i-1; j++{
-				if TempatWisata[j].jarak > TempatWisata[j+1].jarak{
+	case 2:
+		for i := 0; i < JumlahWisata-1; i++ {
+			for j := 0; j < JumlahWisata-i-1; j++ {
+				if TempatWisata[j].jarak > TempatWisata[j+1].jarak {
 					TempatWisata[j], TempatWisata[j+1] = TempatWisata[j+1], TempatWisata[j]
 				}
 			}
 		}
 		fmt.Println("Jarak wisata berhasil diurutkan ")
 
-	case 3 :
-		for i:=0; i<JumlahWisata-1; i++{
-			for j:=0; j<JumlahWisata-i-1; j++{
-				if int(TempatWisata[j].rating) < int(TempatWisata[j+1].rating){
+	case 3:
+		for i := 0; i < JumlahWisata-1; i++ {
+			for j := 0; j < JumlahWisata-i-1; j++ {
+				if int(TempatWisata[j].rating) < int(TempatWisata[j+1].rating) {
 					TempatWisata[j], TempatWisata[j+1] = TempatWisata[j+1], TempatWisata[j]
 				}
 			}
