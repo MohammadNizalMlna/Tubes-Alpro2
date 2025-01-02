@@ -198,8 +198,8 @@ func editDestinasi() {
 	}
 
 	fmt.Print("Masukkan fasilitas baru (kosongkan jika tidak ada yang diubah) :  ")
+	fmt.Println()
 	for i := 0; i < MaxFasilitas; i++ {
-		fmt.Printf("Fasilitas %d: ", i+1)
 		fasilitasBaru := bacaInput(fmt.Sprintf("Fasilitas %d: ", i+1))
 		if fasilitasBaru != "" {
 			destinasi.fasilitasWisata[i] = fasilitasBaru
