@@ -340,34 +340,45 @@ func urutkanDestinasi() {
 
 	switch pilihan {
 	case 1:
-		for i := 0; i < JumlahWisata-1; i++ {
-			for j := 0; j < JumlahWisata-i-1; j++ {
-				if TempatWisata[j].hargaTiket > TempatWisata[j+1].hargaTiket {
-					TempatWisata[j], TempatWisata[j+1] = TempatWisata[j+1], TempatWisata[j]
+		for i := 0; i < JumlahWisata-1; i++ { // mengurutkan berdasarkan harga tiket menggunakan selection sort
+			minIndx := i
+			for j := i + 1; j < JumlahWisata; j++ {
+				if TempatWisata[j].hargaTiket < TempatWisata[minIndx].hargaTiket {
+					minIndx = j
 				}
 			}
+			if minIndx != i {
+				TempatWisata[i], TempatWisata[minIndx] = TempatWisata[minIndx], TempatWisata[i]
+			}
 		}
-		fmt.Println("Harga tiket wisata berhasi diurutkan")
-
+		fmt.Println("Tempat wisata berhasil diurutkan berdasarkan harga tiket (ascending)")
 	case 2:
-		for i := 0; i < JumlahWisata-1; i++ {
-			for j := 0; j < JumlahWisata-i-1; j++ {
-				if TempatWisata[j].jarak > TempatWisata[j+1].jarak {
-					TempatWisata[j], TempatWisata[j+1] = TempatWisata[j+1], TempatWisata[j]
+
+		for i := 0; i < JumlahWisata-1; i++ { // mengurutkan berdasarkan jarak menggunakan selection sort
+			minIndx := i
+			for j := i + 1; j < JumlahWisata; j++ {
+				if TempatWisata[j].jarak < TempatWisata[minIndx].jarak {
+					minIndx = j
 				}
 			}
+			if minIndx != i {
+				TempatWisata[i], TempatWisata[minIndx] = TempatWisata[minIndx], TempatWisata[i]
+			}
 		}
-		fmt.Println("Jarak wisata berhasil diurutkan ")
+		fmt.Println("Tempat wisata berhasil diurutkan berdasarkan jarak (ascending)")
 
 	case 3:
-		for i := 0; i < JumlahWisata-1; i++ {
-			for j := 0; j < JumlahWisata-i-1; j++ {
-				if int(TempatWisata[j].rating) < int(TempatWisata[j+1].rating) {
-					TempatWisata[j], TempatWisata[j+1] = TempatWisata[j+1], TempatWisata[j]
-				}
+		for i := 1; i < JumlahWisata; i++ { // mengurutkan berdasarkan rating menggunakan insertion sort
+			key := TempatWisata[i]
+			j := i - 1
+
+			for j >= 0 && TempatWisata[j].rating < key.rating {
+				TempatWisata[j+1] = TempatWisata[j]
+				j--
 			}
+			TempatWisata[j+1] = key
 		}
-		fmt.Println("Rating berhasil diurutkan")
+		fmt.Println("Tempat wisata berhasil diurutkan berdasarkan rating (descending)")
 	default:
 		fmt.Println("Pilihan tidak valid")
 		return
