@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"strings"
 )
 
@@ -106,6 +108,14 @@ func main() {
 	}
 }
 
+// fungsi untuk membaca input dengan spasi
+func bacaInput(inputan string) string {
+	fmt.Print(inputan)
+	reader := bufio.NewReader(os.Stdin)
+	input, _ := reader.ReadString('\n')
+	return strings.TrimSpace(input) // menghapus spasi dan newline
+}
+
 // Untuk Admin
 func tambahDestinasi() {
 	if JumlahWisata >= maxWisata {
@@ -117,25 +127,23 @@ func tambahDestinasi() {
 	JumlahWisata++
 	Wisata.id = JumlahWisata
 
-	fmt.Print("Masukan nama destinasi wisata : ")
-	fmt.Scanln(&Wisata.nama)
+	Wisata.nama = bacaInput("Masukan nama Destinasi Wisata : ")
 
-	fmt.Print("Masukan kategori wisata: ")
-	fmt.Scanln(&Wisata.kategori)
+	Wisata.kategori = bacaInput("Masukan kategori destinasi wisata : ")
 
-	fmt.Print("Masukan harga tiket masuk : ")
+	fmt.Print("Masukan Harga tiket masuk destinasi wisata : ")
 	fmt.Scanln(&Wisata.hargaTiket)
 
-	fmt.Print("Masukan jarak ke destinasi (dalam km) : ")
+	fmt.Print("Masukan jarak destinasi wisata : ")
 	fmt.Scanln(&Wisata.jarak)
 
 	fmt.Println("Masukan fasilitas yang ada di destinasi wisata : ")
 	for i := 0; i < MaxFasilitas; i++ {
-		fmt.Println("Fasilitas : ", i+1)
-		fmt.Scanln(&Wisata.fasilitasWisata[i])
-		if Wisata.fasilitasWisata[i] == "" {
+		fasilitas := bacaInput(fmt.Sprintf("Fasilitas %d: ", i+1))
+		if fasilitas == "" {
 			break
 		}
+		Wisata.fasilitasWisata[i] = fasilitas
 	}
 
 	Wisata.rating = 0
@@ -147,8 +155,7 @@ func tambahDestinasi() {
 
 func editDestinasi() {
 	var nama string
-	fmt.Print("Masukan nama tempat wisata yang akan diubah : ")
-	fmt.Scanln(&nama)
+	nama = bacaInput("Masukkan nama destinasi wisata yang akan diubah : ")
 
 	var index = -1
 	for i := 0; i < JumlahWisata; i++ {
@@ -166,16 +173,12 @@ func editDestinasi() {
 	destinasi := &TempatWisata[index]
 	fmt.Printf("Mengedit destinasi : %s\n", destinasi.nama)
 
-	fmt.Print("Masukkan nama tempat wisata yang baru (kosongkan jika tidak mengubah): ")
-	var namaBaru string
-	fmt.Scanln(&namaBaru)
+	namaBaru := bacaInput("Masukkan nama destinasi wisata yang baru (kosongkan jika tidak akan diubah ) : ")
 	if namaBaru != "" {
 		destinasi.nama = namaBaru
 	}
 
-	fmt.Print("Masukkan kategori baru (kosongkan jika tidak ada yang diubah): ")
-	var kategoriBaru string
-	fmt.Scanln(&kategoriBaru)
+	kategoriBaru := bacaInput("Masukkan Kategori baru destinasi wisata (kosongkan jika tidak diubah ) : ")
 	if kategoriBaru != "" {
 		destinasi.kategori = kategoriBaru
 	}
@@ -197,8 +200,7 @@ func editDestinasi() {
 	fmt.Print("Masukkan fasilitas baru (kosongkan jika tidak ada yang diubah) :  ")
 	for i := 0; i < MaxFasilitas; i++ {
 		fmt.Printf("Fasilitas %d: ", i+1)
-		var fasilitasBaru string
-		fmt.Scanln(&fasilitasBaru)
+		fasilitasBaru := bacaInput(fmt.Sprintf("Fasilitas %d: ", i+1))
 		if fasilitasBaru != "" {
 			destinasi.fasilitasWisata[i] = fasilitasBaru
 		}
@@ -209,8 +211,7 @@ func editDestinasi() {
 
 func hapusDestinasi() {
 	var nama string
-	fmt.Print("Masukan nama destinasi yang akan dihapus : ")
-	fmt.Scanln(&nama)
+	nama = bacaInput("Masukan nama destinasi wisata yang akan dihapus : ")
 
 	var index = -1
 	for i := 0; i < JumlahWisata; i++ {
@@ -239,9 +240,7 @@ func beriRating() {
 		return
 	}
 
-	var nama string
-	fmt.Print("Masukkan nama destinasi yang ingin diberi rating: ")
-	fmt.Scanln(&nama)
+	nama := bacaInput("Masukan nama destinasi wisata yang akan diberi rating : ")
 
 	var index = -1
 	for i := 0; i < JumlahWisata; i++ {
@@ -287,9 +286,7 @@ func cariDestinasi() {
 
 	switch pilih {
 	case 1:
-		fmt.Print("Masukkan nama destinasi yang dicari: ")
-		var nama string
-		fmt.Scanln(&nama)
+		nama := bacaInput("Masukan nama destinasi wisata yang ingin dicari : ")
 		fmt.Println("Hasil pencarian destinasi berdasarkan nama:")
 		found := false
 		for _, destinasi := range TempatWisata[:JumlahWisata] {
@@ -304,9 +301,7 @@ func cariDestinasi() {
 			fmt.Println("Tidak ada destinasi yang ditemukan")
 		}
 	case 2:
-		fmt.Print("Masukkan kategori destinasi yang dicari: ")
-		var kategori string
-		fmt.Scanln(&kategori)
+		kategori := bacaInput("Masukan kategori destinasi wisata yang ingin dicari : ")
 		fmt.Println("Hasil pencarian destinasi berdasarkan kategori:")
 		found := false
 		for _, destinasi := range TempatWisata[:JumlahWisata] {
@@ -397,7 +392,12 @@ func lihatSemuaDestinasi() {
 	fmt.Println("Daftar tempat wisata: ")
 	for i := 0; i < JumlahWisata; i++ {
 		destinasi := TempatWisata[i]
-		fmt.Printf("%d. %s (Kategori: %s, Harga : Rp%d, Jarak: %d km, Rating : %.2f)\n", destinasi.id, destinasi.nama, destinasi.kategori, destinasi.hargaTiket, destinasi.jarak, destinasi.rating)
-		fmt.Printf(" Fasilitas : %s\n", strings.Join(destinasi.fasilitasWisata[:], ", "))
+		fmt.Printf("ID destinasi wisata : %d\n ", destinasi.id)
+		fmt.Printf("Nama destinasi wisata : %s\n ", destinasi.nama)
+		fmt.Printf("Kategori destinasi wisata : %s\n ", destinasi.kategori)
+		fmt.Printf("Harga tiket destinasi wisata : %d\n ", destinasi.hargaTiket)
+		fmt.Printf("Jarak destinasi wisata : %d\n ", destinasi.jarak)
+		fmt.Printf("Rating destinasi wisata : %.2f\n ", destinasi.rating)
+		fmt.Printf("Fasilitas destinasi wisata : %s\n\n", strings.Join(destinasi.fasilitasWisata[:], ","))
 	}
 }
